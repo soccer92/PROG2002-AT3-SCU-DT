@@ -1,0 +1,93 @@
+<!doctype html>
+<!--
+    Name: Thomas Carpenter
+    Student ID: 23636116
+    Description: Home page for Charity Events Kempsey.
+-->
+<html lang="en-AU">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Charity Events Kempsey</title>
+        <link rel="stylesheet" href="styling.css">
+    </head>
+    <body>
+        <!-- Nav -->
+        <nav>
+            <a class="logo" title="Charity Events Kempsey" href="index.html">Charity Events Kempsey</a>
+            <div class="spacer"></div>
+            <a title="Home" href="index.html" class="active">Home</a>
+            <a title="Search Events" href="search.html">Search Events</a>
+        </nav>
+        <!-- Nav Conclude -->
+
+        <!-- Main Content -->
+         <main>
+            <!-- Static Content -->
+            <section class="welcome">
+                <div class="welcome-wrapper">
+                    <h1>Welcome to Charity Events Kempsey</h1>
+                    <p>Your one-stop shop for finding charity events within the City of Kempsey!</p>
+                    <p>Whether you are looking to participate in a local event or simply stay informed about upcoming charity events, we have got you covered!</p>
+                </div>
+            </section>
+            <!-- Static Content Conclude -->
+
+            <!-- Dynamic Content -->
+            <section>
+                <h2>Upcoming Events</h2>
+                <div class="upcoming-events"></div>
+                <span class="warning"></span>
+            </section>
+            <!-- Dynamic Content Conclude -->
+         </main>
+        <!-- Main Content Conclude -->
+
+        <!-- Footer -->
+        <footer>
+            <p>Copyright (c) Charity Events Kempsey. All rights reserved.</p>
+            <p>Designed by Thomas Carpenter for PROG2002 Assessment Task Two.</p>
+            <p>Welcome Backdrop sourced under standard license from <a href="https://www.shutterstock.com/image-photo/kempsey-australia-494699236" target="_blank">Shutterstock</a>.</p>
+        </footer>
+        <!-- Footer Conclude -->
+    
+    <!-- Javascript -->
+    <script>
+        var upcomingEvents = document.getElementsByClassName("upcoming-events")[0];
+        var warning = document.getElementsByClassName("warning")[0];
+
+        fetch("/api/events")
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (events) {
+                if (events.length === 0) {
+                    warning.innerText = "No upcoming events have been found at this time.";
+                    return;
+                }
+
+                upcomingEvents.innerHTML = events.map(function (event) {
+                    var eventDetail = "event.html?id=" + encodeURIComponent(event.event_id);
+                    var startEventDT = new Date(event.event_start_dt).toLocaleString("en-AU").replace(",", " at");
+                    var endEventDT = new Date(event.event_end_dt).toLocaleString("en-AU").replace(",", " at");
+
+                    return `
+                        <div class="event">
+                            <h3>${event.event_name}</h3>
+                            <p><strong>${event.category_name}:</strong> Organised by ${event.org_name}</p>                        
+                            <p>${event.location_city}</p>
+                            <p>Commences on the ${startEventDT} and concludes on the ${endEventDT}</p>
+                            <p>${event.event_desc}</p>
+                            <p><a class="event-detail" href="${eventDetail}">Click for More Details</a></p>
+                        </div>
+                    `;
+                }).join('');
+                warning.innerText = '';
+            })
+            .catch(function () {
+                warning.innerText = "Could not load events.";
+            });
+    </script>
+    <!-- Javascript Conclude -->
+    </body>
+</html>

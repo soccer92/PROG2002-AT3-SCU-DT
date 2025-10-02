@@ -1,0 +1,142 @@
+<!doctype html>
+<!--
+    Name: Thomas Carpenter
+    Student ID: 23636116
+    Description: Search page for Charity Events Kempsey.
+-->
+<html lang="en-AU">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Search Events &#8212; Charity Events Kempsey</title>
+        <link rel="stylesheet" href="styling.css">
+    </head>
+    <body>
+        <!-- Nav -->
+        <nav>
+            <a class="logo" title="Charity Events Kempsey" href="index.html">Charity Events Kempsey</a>
+            <div class="spacer"></div>
+            <a title="Home" href="index.html">Home</a>
+            <a title="Search Events" href="search.html" class="active">Search Events</a>
+        </nav>
+        <!-- Nav Conclude -->
+
+        <!-- Main Content -->
+        <main>
+            <!-- Search Events Form -->
+             <section>
+                <form id="events-search-form">
+                    <!-- Form Filters to distinguish events based on selected criteria. -->
+                    <fieldset>
+                        <legend>Filters to Search Events</legend>
+                        <!-- Start Date -->
+                        <label for="startDate">Start Date</label>
+                        <input type="date" id="startDate" name="startDate">
+                        <!-- Location -->
+                        <label for="location">Location</label>
+                        <input type="text" id="location" name="location" placeholder="E.g. Kempsey">
+                        <!-- Category -->
+                        <label for="category">Category</label>
+                        <select id="category" name="category">
+                            <option value="">Select a Category</option>
+                        </select>
+                    </fieldset>
+                    <fieldset>
+                        <!-- Clear Filters -->
+                        <input type="reset" name="reset" value="Clear Filters">
+                        <!-- Submit Form -->
+                        <input type="submit" name="submit" value="Search Events">
+                    </fieldset>
+                </form>
+            </section>
+            <!-- Dynamic Content -->
+            <section>
+                <div class="upcoming-events"></div>
+                <span class="warning"></span>
+            </section>
+        </main>
+        <!-- Main Content Conclude -->
+
+        <!-- Footer -->
+        <footer>
+            <p>Copyright (c) Charity Events Kempsey. All rights reserved.</p>
+            <p>Designed by Thomas Carpenter for PROG2002 Assessment Task Two.</p>
+            <p>Welcome Backdrop sourced under standard license from <a href="https://www.shutterstock.com/image-photo/kempsey-australia-494699236" target="_blank">Shutterstock</a>.</p>
+        </footer>
+        <!-- Footer Conclude -->
+    
+    <!-- Javascript -->
+    <script>
+        var upcomingEvents = document.getElementsByClassName("upcoming-events")[0];
+        var warning = document.getElementsByClassName("warning")[0];
+        var searchForm = document.getElementById("events-search-form");
+        var startDateInput = document.getElementById("startDate");
+        var locationInput = document.getElementById("location");
+        var categoryValues = document.getElementById("category");
+
+        // Populate categories field with values from API.
+        fetch("/api/categories")
+            .then(function (response) { return response.json(); })
+            .then(function (categories) {
+                if (!Array.isArray(categories)) return;
+                var options = categories.map(function (cat) {
+                    return '<option value="' + String(cat.category_name || '').replace(/"/g, '&quot;') + '">' + (cat.category_name || '') + '</option>';
+                }).join('');
+                categoryValues.insertAdjacentHTML('beforeend', options);
+            })
+            .catch(function () {});
+
+        // Render events to the page.
+        function renderEvents(events) {
+            if (!Array.isArray(events) || events.length === 0) {
+                upcomingEvents.innerHTML = "";
+                warning.innerText = "No matching events found.";
+                return;
+            }
+            upcomingEvents.innerHTML = events.map(function (event) {
+                var eventDetail = "event.html?id=" + encodeURIComponent(event.event_id);
+                var startEventDT = new Date(event.event_start_dt).toLocaleString("en-AU").replace(",", " at");
+                var endEventDT = new Date(event.event_end_dt).toLocaleString("en-AU").replace(",", " at");
+
+                return `
+                    <div class="event">
+                        <h3>${event.event_name}</h3>
+                        <p><strong>${event.category_name}:</strong> Organised by ${event.org_name}</p>
+                        <p>${event.location_city}</p>
+                        <p>Commences on the ${startEventDT} and concludes on the ${endEventDT}</p>
+                        <p>${event.event_desc}</p>
+                        <p><a class="event-detail" href="event.html?id=${encodeURIComponent(event.event_id)}">Click for More Details</a></p>
+                    </div>
+                `;
+            }).join('');
+            warning.innerText = "";
+        }
+
+        // Submit event to search for events.
+        searchForm.addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            var startDate = (startDateInput.value || "").trim();
+            var location = (locationInput.value || "").trim();
+            var category = (categoryValues.value || "").trim();
+
+            var params = new URLSearchParams();
+            if (startDate) params.set("date", startDate);
+            if (location) params.set("location", location);
+            if (category) params.set("category", category);
+
+            fetch("/api/events/search?" + params.toString())
+                .then(function (response) { return response.json(); })
+                .then(function (events) { renderEvents(events); })
+                .catch(function () { warning.innerText = "Could not load events."; });
+        });
+
+        // Remove events and warnings on reset.
+        searchForm.addEventListener("reset", function () {
+            upcomingEvents.innerHTML = "";
+            warning.innerText = "";
+        });
+    </script>
+    <!-- Javascript Conclude -->
+    </body>
+</html>

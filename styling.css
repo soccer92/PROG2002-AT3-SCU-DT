@@ -1,0 +1,194 @@
+/*
+    Name: Thomas Carpenter
+    Student ID: 23636116
+    Description: Master stylesheet for the web application.
+*/
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    min-height: 100vh;
+    margin: 0;
+    font-family: "Trebuchet MS", sans-serif;
+    background: #eee;
+}
+
+/* Nav */
+nav {
+    display: flex;
+    background: #333;
+}
+
+nav > .logo {
+    font-size: 14pt;
+    font-weight: bold;
+}
+
+nav > .spacer {
+    flex: 1;
+}
+
+nav > a {
+    text-decoration: none;
+    font-size: 12pt;
+    padding: 12px;
+    color: #fff;
+}
+
+nav > a:not(.logo):not(.active):hover { /* Do not apply hover to logo or active link */
+    background: #ccc;
+    color: #333;
+}
+
+nav > a.active {
+    background: #aaa;
+    color: #333;
+}
+/* Nav Conclude */
+
+/* Main */
+main {
+    display: flex;
+    flex-direction: column;
+}
+/* Main Conclude */
+
+/* Section */
+section {
+    display: flex;
+    flex-direction: column;
+    padding: 12px;
+    text-align: center;
+}
+
+section.welcome {
+    background-image: url("./images/backdrop.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+section.welcome > .welcome-wrapper {
+    background: rgba(255, 255, 255, 0.90);
+    padding: 12px;
+}
+
+section.welcome > .welcome-wrapper > h1, section > h1, section > h2 {
+    color: #5F8575;
+}
+
+section.welcome > .welcome-wrapper > p, section > p {
+    font-size: 10pt;
+}
+
+section > .upcoming-events {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin: 0;
+    padding: 0;
+}
+
+section > .upcoming-events > .event {
+    background: rgba(250, 190, 88, 0.4);
+    opacity: 0.75;
+    border: 2px dashed #1b315e;
+    width: 300px;
+    margin: 8px;
+    padding: 12px;
+}
+
+section > .upcoming-events > .event > h3, section > .event-detail > .event > h3 {
+    color: #1b315e;
+}
+
+section > .upcoming-events > .event > p, section > .event-detail > .event > p {
+    font-size: 10pt;
+}
+
+section > .upcoming-events > .event > p > a {
+    text-decoration: underline;
+    color: #1b315e;
+}
+
+section > .event-detail {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+section > .event-detail > .event {
+    background: rgba(250, 190, 88, 0.4);
+    opacity: 0.75;
+    border: 2px dashed #1b315e;
+    width: 80%;
+    margin: 8px;
+    padding: 12px;
+}
+
+section > span.warning {
+    color: #E35335;
+    font-weight: bold;
+    margin: 8px 0;
+}
+
+section > button {
+    border: 1px solid #1b315e;
+    padding: 12px;
+    margin: 8px;
+    font-size: 10pt;
+    cursor: pointer;
+}
+
+section > form > fieldset {
+    border: 2px solid #1b315e;
+    margin: 8px 0;
+    padding: 12px;
+    font-size: 10pt;
+}
+
+section > form > fieldset > legend {
+    font-weight: bold;
+    padding: 12px;
+    background: #1b315e;
+    color: #fff;
+}
+
+section > form > fieldset > label {
+    text-transform: uppercase;
+    color: #1b315e;
+    margin: 8px 0;
+}
+
+section > form > fieldset > input, section > form > fieldset > select {
+    padding: 8px;
+    margin: 8px 0;
+    border: 1px solid #1b315e;
+}
+/* Section Conclude */
+
+/* Footer */
+footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #333;
+    padding: 12px;
+}
+
+footer > p {
+    color: #fff;
+    font-size: 8pt;
+    margin: 8px 0;
+}
+
+footer > p > a {
+    color: #fff;
+}
+/* Footer Conclude */
