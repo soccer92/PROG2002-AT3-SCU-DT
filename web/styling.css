@@ -1,6 +1,5 @@
 /*
-    Name: Thomas Carpenter
-    Student ID: 23636116
+    Name: Thomas Carpenter and Debralee Thompson
     Description: Master stylesheet for the web application.
 */
 
@@ -170,6 +169,23 @@ section > form > fieldset > input, section > form > fieldset > select {
     padding: 8px;
     margin: 8px 0;
     border: 1px solid #1b315e;
+}
+
+section > table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 8px 0;
+}
+
+section > table, section > table > th, section > table > td {
+    border: 2px solid #1b315e;
+    padding: 8px;
+    text-align: center;
+}
+
+section > table > td > a {
+    text-decoration: underline;
+    color: #1b315e;
 }
 /* Section Conclude */
 
