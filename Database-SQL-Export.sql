@@ -1,13 +1,13 @@
--- MySQL dump 10.13  Distrib 8.0.43, for macos15 (arm64)
+-- MySQL dump 10.13  Distrib 9.4.0, for macos15.4 (arm64)
 --
 -- Host: localhost    Database: charityevents_db
 -- ------------------------------------------------------
--- Server version	8.4.6
+-- Server version	9.4.0
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!50503 SET NAMES utf8 */;
+/*!50503 SET NAMES utf8mb4 */;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
@@ -106,6 +106,31 @@ INSERT INTO `event` VALUES (1,1,1,'Bellbrook to Crescent Head Fun Run','A combin
 UNLOCK TABLES;
 
 --
+-- Table structure for table `event_category`
+--
+
+DROP TABLE IF EXISTS `event_category`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `event_category` (
+  `category_id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL,
+  PRIMARY KEY (`category_id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `event_category`
+--
+
+LOCK TABLES `event_category` WRITE;
+/*!40000 ALTER TABLE `event_category` DISABLE KEYS */;
+INSERT INTO `event_category` VALUES (6,'Art Exhibition'),(4,'Benefit Concert'),(8,'Charity Ball'),(5,'Community BBQ'),(1,'Fun Run'),(2,'Gala Dinner'),(10,'Movie Night Fundraiser'),(3,'Silent Auction'),(7,'Trivia Night'),(9,'Walkathon');
+/*!40000 ALTER TABLE `event_category` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `organisation`
 --
 
@@ -132,6 +157,37 @@ LOCK TABLES `organisation` WRITE;
 /*!40000 ALTER TABLE `organisation` DISABLE KEYS */;
 INSERT INTO `organisation` VALUES (1,'Macleay Valley Rail Ltd','Welcome to Macleay Valley Rail Ltd','Introducing trains to our Macleay Valley Communities','www.macleayvalleyrail.com.au','0422 044 712','admin@macleayvalleyrail.com.au'),(2,'Hat Head Landcare','Welcome to Hat Head Landcare','Planting one tree at a time','www.hhlc.org.au','0400 008 754','contact@hhlc.org.au'),(3,'Lifeline Mid Coast','Welcome to Lifeline Mid Coast','Caring for our most vulnerable','www.lifelinemidcoast.org.au','02 6562 1346','admin@lifelinemidcoast.org.au'),(4,'Crescent Head Beach Care','Welcome to Crescent Head Beach Care','Caring for our pristine coastline!','www.chbc.org.au','0476 553 221','chbc@chbc.org.au'),(5,'Gowings Foundation','Welcome to Gowings Foundation','Caring for our Mid-North Coast communities','www.gowings.com.au','1300 800 500','info@gowings.com.au'),(6,'Arts Mid North Coast','Welcome to Arts Mid North Coast','Getting arts back into the MNC!','www.artsmidnorthcoast.com','0400 443 862','contact@artsmidnorthcoast.com'),(7,'Carpenter Foundation','Welcome to the Carpenter Foundation','Improving access for young people on the North Coast','www.carpenterfoundation.com','0488 774 221','contact@carpenterfoundation.com'),(8,'Macleay Valley Revitalisation Project','Welcome to the MVRP!','Improving the Macleay Valley, one step at a time','www.mvrp.org.au','0422 334 113','info@mvrp.org.au');
 /*!40000 ALTER TABLE `organisation` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `registration`
+--
+
+DROP TABLE IF EXISTS `registration`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `registration` (
+  `reg_id` int NOT NULL AUTO_INCREMENT,
+  `event_id` int NOT NULL,
+  `first_name` varchar(50) NOT NULL,
+  `last_name` varchar(50) NOT NULL,
+  `contact_email` varchar(150) NOT NULL,
+  `contact_phone` varchar(20) DEFAULT NULL,
+  `tickets_purchased` int unsigned NOT NULL,
+  `registration_date` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`reg_id`),
+  KEY `fk_registration_event` (`event_id`),
+  CONSTRAINT `fk_registration_event` FOREIGN KEY (`event_id`) REFERENCES `event` (`event_id`) ON DELETE RESTRICT
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `registration`
+--
+
+LOCK TABLES `registration` WRITE;
+/*!40000 ALTER TABLE `registration` DISABLE KEYS */;
+/*!40000 ALTER TABLE `registration` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -170,4 +226,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-09-20 13:28:02
+-- Dump completed on 2025-10-03 20:00:07
