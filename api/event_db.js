@@ -1,6 +1,5 @@
 /*
-	Name: Thomas Carpenter
-    Student ID: 23636116
+	Name: Thomas Carpenter and Debralee Thompson
     Description: SQL Connection for the Charity Events Database.
 */
 var mysql = require('mysql2');
