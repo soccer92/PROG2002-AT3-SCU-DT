@@ -1,12 +1,27 @@
 /*
-	Name: Thomas Carpenter
-    Student ID: 23636116
+	Name: Thomas Carpenter and Debralee Thompson
     Description: Events endpoint to handle event-related requests.
 */
 
 var express = require('express');
 var router = express.Router();
 var db = require('../event_db'); // Database connection.
+
+// Admin dashboard data.
+// Get /api/events/admin/
+router.get('/admin', function (_req, res) {
+    var sql =
+        "SELECT `event`.*, category.category_name, organisation.org_name " +
+        "FROM `event` " +
+        "JOIN category ON `event`.category_id = category.category_id " +
+        "JOIN organisation ON `event`.org_id = organisation.org_id " +
+        "ORDER BY `event`.event_start_dt ASC";
+    
+    db.query(sql, [], function (err, rows) {
+        if (err) return res.status(500).json({ error: 'DB error' });
+        res.json(rows);
+    });
+});
 
 // Homepage data.
 // Get /api/events/
