@@ -55,7 +55,7 @@
         var eventsTableBody = document.getElementsByClassName("events-table-body")[0];
         var warning = document.getElementsByClassName("warning")[0];
 
-        fetch("/api/events")
+        fetch("/api/events/admin/")
             .then(function (response) {
             return response.json();
             })
