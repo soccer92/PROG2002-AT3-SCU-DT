@@ -188,6 +188,15 @@ section > table td a {
     text-decoration: underline;
     color: #1b315e;
 }
+
+section > table td button {
+    border: 1px solid #1b315e;
+    background: none;
+    color: #1b315e;
+    padding: 8px;
+    font-size: 8pt;
+    cursor: pointer;
+}
 /* Section Conclude */
 
 /* Footer */
