@@ -1,0 +1,250 @@
+<!doctype html>
+<!--
+    Name: Debralee Thompson
+    Student ID: 24416186
+    Description: Registration page for Charity Events Kempsey.
+-->
+<html lang="en-AU">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Register | Charity Events Kempsey</title>
+        <link rel="stylesheet" href="styling.css">
+    </head>
+    <body>
+        <!-- Nav -->
+        <nav>
+            <a class="logo" title="Charity Events Kempsey" href="index.html">Charity Events Kempsey</a>
+            <div class="spacer"></div>
+            <a title="Home" href="index.html" class="active">Home</a>
+            <a title="Search Events" href="search.html">Search Events</a>
+        </nav>
+        <!-- Nav Conclude -->
+
+        <!-- Main Content -->
+         <main>
+            
+            <section id="event-details">
+                <!-- Event details will be filled dynamically using JS -->
+            </section>
+            
+            <section>
+                <form id="registration-form">
+                    <fieldset>
+                        <legend>Please complete all form fields:</legend>
+                        <input type="hidden" id="event_id" name="event_id" value="">
+                        
+                        <div class="form-row">
+                            <label for="first_name">First Name:</label>
+                            <input type="text" id="first_name" name="first_name" required>
+                            <span class="error-message" id="first_name-error"></span>
+                        </div>
+
+                        <div class="form-row">
+                            <label for="last_name">Last Name:</label>
+                            <input type="text" id="last_name" name="last_name" required>
+                            <span class="error-message" id="last_name-error"></span>
+                        </div>                    
+
+                        <div class="form-row">
+                            <label for="contact_email">Email:</label>
+                            <input type="email" id="contact_email" name="contact_email" required>
+                            <span class="error-message" id="contact_email-error"></span>
+                        </div>
+
+                        <div class="form-row">
+                            <label for="contact_phone">Phone:</label>
+                            <input type="tel" id="contact_phone" name="contact_phone">
+                            <span class="error-message" id="contact_phone-error"></span>
+                        </div>
+
+                        <div class="form-row">                    
+                            <label for="tickets_purchased">Number of Tickets:</label>
+                            <input type="number" id="tickets_purchased" name="tickets_purchased" min="1" required>
+                            <span class="error-message" id="tickets_purchased-error"></span>
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <input type="reset" name="reset" value="Clear Form">
+                        <input type="submit" name="submit" value="Register">
+                    </fieldset>
+                </form>
+            </section>
+
+            <section>
+                <div id="confirmation">
+                    <!-- Confirmation will be filled dynamically using JS -->
+                </div>
+            </section>
+
+         </main>
+        <!-- Main Content Conclude -->
+
+        <!-- Footer -->
+        <footer>
+            <p>Copyright (c) Charity Events Kempsey. All rights reserved.</p>
+            <p>Designed by Thomas Carpenter & Debralee Thompson for PROG2002 Assessment Task Three.</p>
+            <p>Welcome Backdrop sourced under standard license from <a href="https://www.shutterstock.com/image-photo/kempsey-australia-494699236" target="_blank">Shutterstock</a>.</p>
+        </footer>
+        <!-- Footer Conclude -->
+    
+        <!-- Javascript -->
+        <script>
+            // Get event_id from the query string to use in the GET request
+            // Used to retrieve event details
+            const urlParams = new URLSearchParams(window.location.search);
+            const eventId = urlParams.get("id");
+
+            // DOM element references
+            const hiddenEventIdInput = document.getElementById("event_id");
+            const eventDetails = document.getElementById("event-details");
+            const registrationForm = document.getElementById("registration-form");
+            const confirmationDiv = document.getElementById("confirmation");
+
+            // Hide until later
+            confirmationDiv.style.display = "none";
+
+
+            // SECTION: Event Details
+            // Load event details
+            if (eventId) {
+                // Set the hidden input field
+                hiddenEventIdInput.value = eventId;
+
+                // Fetch event details from API using event_id
+                fetch(`/api/events/${encodeURIComponent(eventId)}`)
+                    .then(response => {
+                        if (!response.ok) throw new Error("Failed to fetch event details");
+                        return response.json();
+                    })
+                    .then(event => {
+                        // Format start/end date-times safely
+                        const startDT = event.event_start_dt
+                            ? new Date(event.event_start_dt).toLocaleString("en-AU").replace(",", " at")
+                            : null;
+                        const endDT = event.event_end_dt
+                            ? new Date(event.event_end_dt).toLocaleString("en-AU").replace(",", " at")
+                            : null;
+
+                        // Update the document title dynamically to include the event name
+                        document.title = `${event.event_name || "Event"} Registration — Charity Events Kempsey`;
+
+                        // Render event details into the #event-details section
+                        eventDetails.innerHTML = `
+                            <h2>${event.event_name || "Event"} Registration</h2>
+                            <p>${event.category_name ? `<strong>${event.category_name}</strong> — Organised by ${event.org_name || "Unknown"}` : ""}</p>
+                            <p><strong>Location:</strong> ${event.location_city || "Location TBC"}</p>
+                            ${startDT ? `<p><strong>Date:</strong> Commences on ${startDT}${endDT ? ` and concludes on ${endDT}` : ""}</p>` : ""}
+                            <p>${event.event_desc || "No description available."}</p>
+                        `;
+                    })
+                    .catch(error => {
+                        console.error("Event fetch error:", error);
+                        eventDetails.innerHTML = `
+                            <p class="failure">Could not load event details.</p>
+                        `;
+                    });
+                } else {
+                    console.warn("No event_id found in query string.");
+                    eventDetails.innerHTML = `
+                        <p class="failure">No event selected. Please return to the events page.</p>
+                    `;
+                }
+
+
+            // SECTION: Registration Form
+            function showFieldError(fieldId, message) {
+                const errorSpan = document.getElementById(`${fieldId}-error`);
+                const inputField = document.getElementById(fieldId);
+                if (errorSpan) errorSpan.textContent = message;
+                if (inputField) inputField.classList.add("error");
+            }
+
+            function clearErrors() {
+                document.querySelectorAll(".error-message").forEach(el => el.textContent = "");
+                document.querySelectorAll("input").forEach(el => el.classList.remove("error"));
+            }
+
+            // Clear errors when user clicks Reset
+            registrationForm.addEventListener("reset", clearErrors);
+
+            registrationForm.addEventListener("submit", function (e) {
+                // Prevent form from refreshing the page
+                e.preventDefault(); 
+                clearErrors(); // always reset first
+
+                // Extract and validate form values
+                const firstName = document.getElementById("first_name").value.trim();
+                const lastName = document.getElementById("last_name").value.trim();
+                const email = document.getElementById("contact_email").value.trim();
+                const phone = document.getElementById("contact_phone").value.trim();
+                const tickets = parseInt(document.getElementById("tickets_purchased").value, 10);
+
+                // Basic clientside validation
+                if (!firstName) {
+                    showFieldError("first_name", "First name is required.");
+                    return;
+                }
+                if (!lastName) {
+                    showFieldError("last_name", "Last name is required.");
+                    return;
+                }
+                if (!email || !email.includes("@") || !email.includes(".")) {
+                    showFieldError("contact_email", "Please enter a valid email address.");
+                    return;
+                }
+                if (phone && !/^[+\d\s-]{6,15}$/.test(phone)) {
+                    showFieldError("contact_phone", "Please enter a valid phone number.");
+                    return;
+                }
+                if (isNaN(tickets) || tickets < 1) {
+                    showFieldError("tickets_purchased", "Please enter at least 1 ticket.");
+                    return;
+                }
+                
+                // If validation passes, build the POST data object
+                const formData = {
+                    event_id: eventId,
+                    first_name: firstName,
+                    last_name: lastName,
+                    contact_email: email,
+                    contact_phone: phone,
+                    tickets_purchased: tickets
+                };
+
+                // Send POST request to backend API
+                fetch("/api/registrations", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(formData)
+                })
+                .then(response => {
+                    if (!response.ok) { throw new Error("Failed to register. Please try again."); }
+                    return response.json();
+                })
+                .then(data => {
+                    // Hide the form and show success message
+                    registrationForm.style.display = "none";
+
+                    confirmationDiv.innerHTML = `
+                        <div class="success">
+                            <h3>Registration Successful</h3>
+                            <p>Thank you for supporting us, ${firstName}!</p>
+                            <p>You have registered ${tickets} ticket${tickets > 1 ? "s" : ""} for this event.</p>
+                            <p>Your reference number is <strong>${data.registration_ref}</strong>.</p>
+                            <p><a href="index.html" class="button">Return Home</a></p>
+                        </div>
+                    `;
+
+                    confirmationDiv.style.display = "block";
+                })
+                .catch(err => {
+                    console.error("Registration error:", err);
+                    alert("There was an issue submitting your registration. Please try again.");
+                });
+            });
+        </script>
+        <!-- Javascript Conclude -->
+
+    </body>
+</html>
