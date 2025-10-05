@@ -1,27 +1,12 @@
 /*
-	Name: Thomas Carpenter and Debralee Thompson
+	Name: Thomas Carpenter
+    Student ID: 23636116
     Description: Events endpoint to handle event-related requests.
 */
 
 var express = require('express');
 var router = express.Router();
 var db = require('../event_db'); // Database connection.
-
-// Admin dashboard data.
-// Get /api/events/admin/
-router.get('/admin', function (_req, res) {
-    var sql =
-        "SELECT `event`.*, category.category_name, organisation.org_name " +
-        "FROM `event` " +
-        "JOIN category ON `event`.category_id = category.category_id " +
-        "JOIN organisation ON `event`.org_id = organisation.org_id " +
-        "ORDER BY `event`.event_start_dt ASC";
-    
-    db.query(sql, [], function (err, rows) {
-        if (err) return res.status(500).json({ error: 'Database error.' });
-        res.json(rows);
-    });
-});
 
 // Homepage data.
 // Get /api/events/
@@ -35,7 +20,7 @@ router.get('/', function (_req, res) {
         "ORDER BY `event`.event_start_dt ASC";
 
     db.query(sql, [], function (err, rows) {
-        if (err) return res.status(500).json({ error: 'Database error.' });
+        if (err) return res.status(500).json({ error: 'DB error' });
         res.json(rows);
     });
 });
@@ -93,41 +78,6 @@ router.get('/:id', function (req, res) {
         if (err) return res.status(500).json({ error: 'Database error.' });
         if (rows.length === 0) return res.status(404).json({ error: 'Event not found, please try again' });
         res.json(rows[0]);
-    });
-});
-
-// Delete event data.
-// DELETE /api/events/:id
-router.delete('/:id', (req, res) => {
-    const id = req.params.id;
-
-    // Step 1: Delete related rows in donation and ticket tables.
-    db.query('DELETE FROM donation WHERE event_id = ?', [id], (errDonation) => {
-        if (errDonation) {
-            console.error('Error deleting from donation table:', errDonation.message);
-            return res.status(500).json({ error: 'Database error while deleting donations.' });
-        }
-
-        db.query('DELETE FROM ticket WHERE event_id = ?', [id], (errTicket) => {
-            if (errTicket) {
-                console.error('Error deleting from ticket table:', errTicket.message);
-                return res.status(500).json({ error: 'Database error while deleting tickets.' });
-            }
-
-            // Step 2: Delete the event itself.
-            db.query('DELETE FROM `event` WHERE event_id = ?', [id], (errEvent, result) => {
-                if (errEvent) {
-                    console.error('Error deleting from event table:', errEvent.message);
-                    return res.status(500).json({ error: 'Database error while deleting event.' });
-                }
-
-                if (result.affectedRows === 0) {
-                    return res.status(404).json({ error: 'Event not found.' });
-                }
-
-                res.json({ message: 'Event has been successfully deleted.' });
-            });
-        });
     });
 });
 
