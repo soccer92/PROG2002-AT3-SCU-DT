@@ -8,7 +8,7 @@ var mysql = require('mysql2');
 var connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: 'config#1',
+    password: 'Psy12cho!', // CHANGED TO MY ROOT PASSWORD
     database: 'charityevents_db'
 });
 
