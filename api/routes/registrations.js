@@ -57,6 +57,14 @@ router.post('/', function (req, res) {
     db.query(insertSql, params, function (err, result) {
         // Check for database errors during the query operation and if one occurs log it to the console for debuggingg and send a 500 (Internal Server Error) response back to the client
         if (err) {
+            // Handle duplicate registration gracefully
+            if (err.code === 'ER_DUP_ENTRY') {
+                return res.status(400).json({
+                    error: 'You have already registered for this event using this email.'
+                });
+            }
+            
+            // Handle other database errors
             console.error("Database insert error:", err);
             return res.status(500).json({ error: 'Failed to save registration.' });
         }

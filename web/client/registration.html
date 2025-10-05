@@ -153,6 +153,7 @@
 
 
             // SECTION: Registration Form
+            // Form error messages
             function showFieldError(fieldId, message) {
                 const errorSpan = document.getElementById(`${fieldId}-error`);
                 const inputField = document.getElementById(fieldId);
@@ -218,9 +219,11 @@
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(formData)
                 })
-                .then(response => {
-                    if (!response.ok) { throw new Error("Failed to register. Please try again."); }
-                    return response.json();
+                .then(async response => {
+                    // Parse JSON, even if status != 200
+                    const data = await response.json().catch(() => ({}));
+                    if (!response.ok) throw data;
+                    return data;
                 })
                 .then(data => {
                     // Hide the form and show success message
@@ -231,16 +234,19 @@
                             <h3>Registration Successful</h3>
                             <p>Thank you for supporting us, ${firstName}!</p>
                             <p>You have registered ${tickets} ticket${tickets > 1 ? "s" : ""} for this event.</p>
-                            <p>Your reference number is <strong>${data.registration_ref}</strong>.</p>         
-                            <p><a href="event.html?id=${eventId}" class="button">Return to Event</a> <a href="index.html" class="button">Return Home</a></p>
+                            <p>Your reference number is <strong>${data.registration_ref}</strong>.</p>
+                            <p>
+                                <a href="event.html?id=${eventId}" class="button">Return to Event</a>
+                                <a href="index.html" class="button">Return Home</a>
+                            </p>
                         </div>
                     `;
-
                     confirmationDiv.style.display = "block";
                 })
                 .catch(err => {
-                    console.error("Registration error:", err);
-                    alert("There was an issue submitting your registration. Please try again.");
+                    const message = err?.error || "An unexpected error occurred. Please try again.";
+                    const globalError = document.querySelector(".error-message");
+                    if (globalError) globalError.textContent = message;
                 });
             });
         </script>
