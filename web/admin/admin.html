@@ -1,6 +1,7 @@
 <!doctype html>
 <!--
-    Name: Thomas Carpenter and Debralee Thompson
+    Name: Thomas Carpenter
+    Student ID: 23636116
     Description: Admin dashboard for Charity Events Kempsey.
 -->
 <html lang="en-AU">
@@ -54,7 +55,7 @@
         var eventsTableBody = document.getElementsByClassName("events-table-body")[0];
         var warning = document.getElementsByClassName("warning")[0];
 
-        fetch("/api/events/admin/")
+        fetch("/api/events")
             .then(function (response) {
             return response.json();
             })
@@ -70,7 +71,7 @@
                     <td>${event.event_id}</td>
                     <td>${event.event_name}</td>
                     <td><a href="update.html?id=${event.event_id}">Update</a></td>
-                    <td><button onclick="deleteEvent(${event.event_id})">Delete</button></td>
+                    <td><a href="delete.html?id=${event.event_id}">Delete</a></td>
                 </tr>
                 `;
             }).join('');
@@ -79,35 +80,6 @@
             .catch(function () {
             warning.innerText = "Could not load events.";
         });
-
-        function deleteEvent(eventID) {
-        if (!confirm("Are you sure you would like to delete this event?")) return;
-
-        fetch(`/api/events/${eventID}`, { 
-            method: "DELETE" 
-        })
-        .then(function (response) {
-            return response.json()
-            .catch(function () {
-                return {};
-            })
-            .then(function (data) {
-                return { ok: response.ok, data: data };
-            });
-        })
-        .then(function (result) {
-            if (result.ok && (result.data.message || true)) {
-            location.reload();
-            } 
-            else {
-            warning.innerText = (result.data && (result.data.error || result.data.message)) ||
-                "Failed to delete event.";
-            }
-        })
-        .catch(function () {
-            warning.innerText = "Failed to delete event.";
-        });
-    }
     </script>
     <!-- Javascript Conclude -->
     </body>

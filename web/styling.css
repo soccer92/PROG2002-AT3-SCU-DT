@@ -145,6 +145,25 @@ section > button {
     cursor: pointer;
 }
 
+/* Added for the new functioning 'Register for Event' button <a> in event.html */
+a.button {
+    display: inline-block;
+    border: 1px solid #1b315e;
+    padding: 12px;
+    margin: 8px;
+    font-size: 10pt;
+    cursor: pointer;
+    text-decoration: none;
+    color: #1b315e;
+    background: #fff;
+}
+
+a.button:hover {
+    background: #1b315e;
+    color: #fff;
+}
+/* end a.button */
+
 section > form > fieldset {
     border: 2px solid #1b315e;
     margin: 8px 0;
@@ -171,11 +190,53 @@ section > form > fieldset > input, section > form > fieldset > select {
     border: 1px solid #1b315e;
 }
 
+/* REGISTRATION FORM SPECIFICS (registration.html)
+ * Uses <div class="form-row"> to put label/input pairs in their own rows
+ */
+ 
+/* Limit width of the registration form and centre it */
+#registration-form {
+  max-width: 600px; /* or 700 / 800 if you like */
+  margin: 0 auto;
+  text-align: left;
+  width: 100%; /* ensures it grows up to max-width */
+}
+
+#registration-form fieldset:last-of-type { /* the submit and reset inputs */
+  text-align: center; /* centers the inline inputs */
+}
+
+ .form-row {
+  display: flex;
+  align-items: center;     /* vertically centers label & input */
+  justify-content: flex-start;
+  margin-bottom: 10px;
+  gap: 10px;               /* space between label and input */
+}
+
+/* Ensure labels have a consistent width */
+.form-row label {
+  width: 150px;            /* adjust as needed for alignment */
+  text-align: right;       /* keeps labels neatly aligned */
+  color: #1b315e;
+  font-weight: bold;
+text-transform: uppercase;  
+}
+
+/* Inputs stretch but stay neat */
+.form-row input,
+.form-row select {
+  flex: 1;
+  padding: 8px;
+  margin: 8px 0;
+  border: 1px solid #1b315e;
+}
+
 section > table {
     border-collapse: collapse;
     width: 100%;
     margin: 8px 0;
-    font-size: 8pt;
+    font-size: 10pt;
 }
 
 section > table, section > table th, section > table td {
@@ -184,18 +245,9 @@ section > table, section > table th, section > table td {
     text-align: center;
 }
 
-section > table td a {
+section > table > td > a {
     text-decoration: underline;
     color: #1b315e;
-}
-
-section > table td button {
-    border: 1px solid #1b315e;
-    background: none;
-    color: #1b315e;
-    padding: 8px;
-    font-size: 8pt;
-    cursor: pointer;
 }
 /* Section Conclude */
 
@@ -218,3 +270,48 @@ footer > p > a {
     color: #fff;
 }
 /* Footer Conclude */
+
+
+/* Registration sucess message */
+.success>h3 {
+    margin-top: 1em;
+    color: green;
+    font-weight:bold;
+}
+
+.failure {
+    color:#b30000;
+}
+
+.error-message {
+  color: #b30000;
+  font-size: 0.9rem;
+  margin-left: 8px;
+}
+
+input.error {
+  border: 2px solid #b30000;
+  background-color: #fff5f5;
+}
+
+
+.success {
+  background-color: #e9ffe9;
+  border: 1px solid #9acd32;
+  padding: 1rem;
+  border-radius: 6px;
+  text-align: center;
+}
+
+
+section#attendees {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+section#attendees > * {
+    width: 80%;
+    max-width: 1000px;
+    margin: 8px 0;
+}
