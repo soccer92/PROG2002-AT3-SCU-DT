@@ -189,6 +189,15 @@ section > table > td > a {
     text-decoration: underline;
     color: #1b315e;
 }
+
+section > table td button {
+    border: 1px solid #1b315e;
+    background: none;
+    color: #1b315e;
+    padding: 8px;
+    font-size: 8pt;
+    cursor: pointer;
+}
 /* Section Conclude */
 
 /* Footer */
@@ -211,9 +220,7 @@ footer > p > a {
 }
 /* Footer Conclude */
 
-
-/* Added styles */
-
+/* Debralee styling additions */
 /* Registration sucess message */
 .success>h3 {
     margin-top: 1em;
@@ -238,7 +245,6 @@ input.error {
   background-color: #fff5f5;
 }
 
-
 .success {
   background-color: #e9ffe9;
   border: 1px solid #9acd32;
@@ -246,7 +252,6 @@ input.error {
   border-radius: 6px;
   text-align: center;
 }
-
 
 section#attendees {
     display: flex;
@@ -261,15 +266,14 @@ section#attendees > * {
 }
 
 /* REGISTRATION FORM SPECIFICS (registration.html)
- * Uses <div class="form-row"> to put label/input pairs in their own rows
+    * Uses <div class="form-row"> to put label/input pairs in their own rows
  */
- 
 /* Limit width of the registration form and centre it */
 #registration-form {
-  max-width: 600px; /* or 700 / 800 if you like */
+  max-width: 600px;
   margin: 0 auto;
   text-align: left;
-  width: 100%; /* ensures it grows up to max-width */
+  width: 100%; /* Ensures it grows up to max-width */
 }
 
 #registration-form fieldset:last-of-type { /* the submit and reset inputs */
@@ -278,16 +282,16 @@ section#attendees > * {
 
  .form-row {
   display: flex;
-  align-items: center;     /* vertically centers label & input */
+  align-items: center; /* Vertically centers label abd input */
   justify-content: flex-start;
   margin-bottom: 10px;
-  gap: 10px;               /* space between label and input */
+  gap: 10px; /* Space between label and input */
 }
 
 /* Ensure labels have a consistent width */
 .form-row label {
-  width: 150px;            /* adjust as needed for alignment */
-  text-align: right;       /* keeps labels neatly aligned */
+  width: 150px; /* Adjust as needed for alignment */
+  text-align: right; /* Keeps labels neatly aligned */
   color: #1b315e;
   font-weight: bold;
 text-transform: uppercase;  
@@ -319,4 +323,3 @@ a.button:hover {
     background: #1b315e;
     color: #fff;
 }
-/* end a.button */
