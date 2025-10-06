@@ -1,12 +1,27 @@
 /*
-	Name: Thomas Carpenter
-    Student ID: 23636116
+	Name: Thomas Carpenter and Debralee Thompson
     Description: Events endpoint to handle event-related requests.
 */
 
 var express = require('express');
 var router = express.Router();
 var db = require('../event_db'); // Database connection.
+
+// Admin dashboard data.
+// Get /api/events/admin/
+router.get('/admin', function (_req, res) {
+    var sql =
+        "SELECT `event`.*, category.category_name, organisation.org_name " +
+        "FROM `event` " +
+        "JOIN category ON `event`.category_id = category.category_id " +
+        "JOIN organisation ON `event`.org_id = organisation.org_id " +
+        "ORDER BY `event`.event_start_dt ASC";
+    
+    db.query(sql, [], function (err, rows) {
+        if (err) return res.status(500).json({ error: 'Database error.' });
+        res.json(rows);
+    });
+});
 
 // Homepage data.
 // Get /api/events/
@@ -20,7 +35,7 @@ router.get('/', function (_req, res) {
         "ORDER BY `event`.event_start_dt ASC";
 
     db.query(sql, [], function (err, rows) {
-        if (err) return res.status(500).json({ error: 'DB error' });
+        if (err) return res.status(500).json({ error: 'Database error.' });
         res.json(rows);
     });
 });
@@ -81,4 +96,84 @@ router.get('/:id', function (req, res) {
     });
 });
 
+// Delete event data.
+// DELETE /api/events/:id
+router.delete('/:id', function (req, res) {
+    var EventID = Number(req.params.id);
+    if (!Number.isInteger(EventID) || EventID <= 0) {
+        return res.status(400).json({ error: 'Invalid Event ID.' });
+    }
+
+    db.beginTransaction(function (err) {
+        if (err) {
+            console.error('Error starting transaction:', err.message);
+            return res.status(500).json({ error: 'Database error with commencing transaction.' });
+        }
+
+        var checkRegistrationEntries = "SELECT COUNT(*) AS count FROM registration WHERE event_id = ?";
+        db.query(checkRegistrationEntries, [EventID], function (err, rows) {
+            if (err) {
+                console.error('Error checking registrations:', err.message);
+                return db.rollback(function () {
+                    res.status(500).json({ error: 'Database error while checking registrations.' });
+                });
+            }
+
+            var registrationsExist = rows && rows.length && rows[0].count > 0;
+            if (registrationsExist) {
+                return db.rollback(function () {
+                    res.status(400).json({
+                        message: 'Event deletion has been blocked due to registrations existing with this event.'
+                    });
+                });
+            }
+            var deleteEventTicket = "DELETE FROM ticket WHERE event_id = ?";
+            var deleteEvent = "DELETE FROM `event` WHERE event_id = ?";
+            var deleteEventDonation = "DELETE FROM donation WHERE event_id = ?";
+
+            db.query(deleteEventTicket, [EventID], function (err, result) {
+                if (err) {
+                    console.error('Error deleting tickets:', err.message);
+                    return db.rollback(function () {
+                        res.status(500).json({ error: 'Database error while deleting event from tickets.' });
+                    });
+                }
+
+                db.query(deleteEventDonation, [EventID], function (err, result) {
+                    if (err) {
+                        console.error('Error deleting donations:', err.message);
+                        return db.rollback(function () {
+                            res.status(500).json({ error: 'Database error while deleting event from donations.' });
+                        });
+                    }
+                    db.query(deleteEvent, [EventID], function (err, result) {
+                        if (err) {
+                            console.error('Error deleting event:', err.message);
+                            return db.rollback(function () {
+                                res.status(500).json({ error: 'Database error while deleting event.' });
+                            });
+                        }
+
+                        if (result.affectedRows === 0) {
+                            return db.rollback(function () {
+                                res.status(404).json({ error: 'Event not found, please try again' });
+                            });
+                        }
+
+                        db.commit(function (err) {
+                            if (err) {
+                                console.error('Error committing transaction:', err.message);
+                                return db.rollback(function () {
+                                    res.status(500).json({ error: 'Database error during commit.' });
+                                });
+                            }
+                            res.json({ message: 'Event and associated data has been deleted successfully.' });
+                        }
+                        );
+                    });
+                });
+            });
+        });
+    });
+});
 module.exports = router;
