@@ -21,7 +21,7 @@ app.use(express.json()); // Middleware: parse JSON bodies from fetch() POSTs
 app.use(express.urlencoded({ extended: true })); // Middleware: parse URL-encoded form data (optional but harmless)
 
 app.use(express.static(path.join(__dirname, '../web/client'))); // Serve static files from the 'web' directory.
-app.use('/admin', express.static('web/admin'));  // Admin still under /admin
+app.use('/admin', express.static('../web/admin'));  // Admin still under /admin
 
 // Routes
 app.use('/api/events', routerEvents); // Map the events route.
