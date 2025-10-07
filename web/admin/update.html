@@ -69,6 +69,7 @@
                         <input type="submit" name="submit" value="Update Event">
                     </fieldset>
                 </form>
+                <span class="warning"></span>
             </section>
          </main>
         <!-- Main Content Conclude -->
@@ -82,7 +83,71 @@
         <!-- Footer Conclude -->
     
     <!-- Javascript -->
-    <script></script>
+    <script>
+        var eventFormUpdate = document.getElementById("update-event-form");
+        var warning = document.getElementsByClassName("warning")[0];
+        // Retrieve Event ID to update.
+        var uniqueEventID = new URLSearchParams(location.search).get("id");
+
+        if(uniqueEventID === null) {
+            warning.innerText = "No event has been selected for update. Please navigate back to the dashboard and try again."
+            return;
+        } else {
+            // Retrieves values and fills the form in accordingly.
+            fetch("/api/events/" + encodeURIComponent(uniqueEventID))
+                .then(function (response) {
+                    return response.json();
+                })
+                .then(function (event) {
+                    if (event.error) {
+                        warning.innerText = event.error;
+                        return;
+                    }
+                    // Map form field ID names to the values in the Event database.
+                    document.getElementById("eventName").value = event.event_name;
+                    document.getElementById("eventDescription").value = event.event_desc;
+                    document.getElementById("startDateTime").value = event.event_start_dt.replace('T',' ');
+                    document.getElementById("endDateTime").value = event.event_end_dt.replace('T',' ');
+                    document.getElementById("locationCity").value = event.location_city;
+                    document.getElementById("locationState").value = event.location_state;
+                    document.getElementById("locationPostcode").value = event.location_postcode;
+                })
+                .catch(function() {
+                    warning.innerText = "Error loading event details, please try again."
+                });
+        }
+        // Updating the form values.
+        eventFormUpdate.addEventListener("submit", function (e) {
+            e.preventDefault();
+            var newUpdatedEvent = {
+                event_name: document.getElementById("eventName").value,
+                event_desc: document.getElementById("eventDescription").value,
+                event_start_dt: document.getElementById("startDateTime").value.replace('T',' '),
+                event_end_dt: document.getElementById("endDateTime").value.replace('T',' '),
+                location_city: document.getElementById("locationCity").value,
+                location_state: document.getElementById("locationState").value,
+                location_postcode: document.getElementById("locationPostcode").value
+            };
+            fetch("/api/events" + encodeURIComponent(uniqueEventID), {
+                method: "PUT",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify(newUpdatedEvent)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.result) {
+                    alert("Event has been updated successfully with the new details.");
+                    location.href = "admin.html";
+                }
+                else {
+                    alert("Error updating event, please try again.");
+                }
+            })
+            .catch(function() {
+                alert("Error updating event, please try again.");
+            });
+        });
+    </script>
     <!-- Javascript Conclude -->
     </body>
 </html>
