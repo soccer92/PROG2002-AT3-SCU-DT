@@ -7,14 +7,15 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Update Events &#8212; Charity Events Kempsey</title>
+        <title>Update Event &#8212; Admin Portal &#8212; Charity Events Kempsey</title>
         <link rel="stylesheet" href="../styling.css">
     </head>
     <body>
         <!-- Nav -->
         <nav>
-            <a class="logo" title="Update Events &#8212; Charity Events Kempsey" href="admin.html">Update Events &#8212; Charity Events Kempsey</a>
+            <a class="logo" title="Admin Portal &#8212; Charity Events Kempsey" href="admin.html">Admin Portal &#8212; Charity Events Kempsey</a>
             <div class="spacer"></div>
+            <a title="Dashboard" href="admin.html">Dashboard</a>
             <a title="New Event" href="">New Event</a>
         </nav>
         <!-- Nav Conclude -->
@@ -22,7 +23,51 @@
         <!-- Main Content -->
          <main>
             <section>
-                
+                <h2>Update Event</h2>
+                <form id="update-event-form">
+                    <fieldset>
+                        <legend>Update form fields:</legend>
+                        <!-- Event Name -->
+                         <div class="form-row">
+                            <label for="eventName">Event Name</label>
+                            <input type="text" id="eventName" name="eventName" required>
+                        </div>
+                        <!-- Event Description -->
+                        <div class="form-row">
+                            <label for="eventDescription">Event Description</label>
+                            <textarea id="eventDescription" name="eventDescription" rows="4" required></textarea>
+                        </div>
+                        <!-- Event Start Date and Time -->
+                        <div class="form-row">
+                            <label for="startDateTime">Event Start Date and Time</label>
+                            <input type="datetime-local" id="startDateTime" name="startDateTime">
+                        </div>
+                        <!-- Event End Date and Time -->
+                        <div class="form-row">
+                            <label for="endDateTime">Event End Date and Time</label>
+                            <input type="datetime-local" id="endDateTime" name="endDateTime">
+                        </div>
+                        <!-- Event City -->
+                        <div class="form-row">
+                            <label for="locationCity">Event City</label>
+                            <input type="text" id="locationCity" name="locationCity" required>
+                        </div>
+                        <!-- Event State -->
+                        <div class="form-row">
+                            <label for="locationState">Event State</label>
+                            <input type="text" id="locationState" name="locationState" required>
+                        </div>
+                        <!-- Event Postcode -->
+                        <div class="form-row">
+                            <label for="locationPostcode">Event Postcode</label>
+                            <input type="text" id="locationPostcode" name="locationPostcode" required>
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <!-- Submit Form -->
+                        <input type="submit" name="submit" value="Update Event">
+                    </fieldset>
+                </form>
             </section>
          </main>
         <!-- Main Content Conclude -->
