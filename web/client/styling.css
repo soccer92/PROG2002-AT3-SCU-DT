@@ -1,6 +1,8 @@
 /*
     Name: Thomas Carpenter and Debralee Thompson
+    Main Author: Thomas Carpenter (23636116)
     Description: Master stylesheet for the web application.
+    Note: Debralee's code is highlighted with comments.
 */
 
 * {
@@ -78,11 +80,14 @@ section.welcome > .welcome-wrapper {
     padding: 12px;
 }
 
-section.welcome > .welcome-wrapper > h1, section > h1, section > h2 {
+section.welcome > .welcome-wrapper > h1, 
+section > h1, 
+section > h2 {
     color: #5F8575;
 }
 
-section.welcome > .welcome-wrapper > p, section > p {
+section.welcome > .welcome-wrapper > p, 
+section > p {
     font-size: 10pt;
 }
 
@@ -103,11 +108,13 @@ section > .upcoming-events > .event {
     padding: 12px;
 }
 
-section > .upcoming-events > .event > h3, section > .event-detail > .event > h3 {
+section > .upcoming-events > .event > h3, 
+section > .event-detail > .event > h3 {
     color: #1b315e;
 }
 
-section > .upcoming-events > .event > p, section > .event-detail > .event > p {
+section > .upcoming-events > .event > p, 
+section > .event-detail > .event > p {
     font-size: 10pt;
 }
 
@@ -145,83 +152,52 @@ section > button {
     cursor: pointer;
 }
 
-section > form > fieldset {
-    border: 2px solid #1b315e;
-    margin: 8px 0;
-    padding: 12px;
-    font-size: 10pt;
+/* CSS developed by Debralee. */
+section > #registration-form,
+section > #update-event-form {
+    /* Limit width of the registration form and centre it. */
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: left;
+    width: 100%; /* Ensures it grows up to max-width */
 }
 
-section > form > fieldset > legend {
-    font-weight: bold;
-    padding: 12px;
-    background: #1b315e;
-    color: #fff;
+/* The submit and reset inputs */
+section > #registration-form > fieldset:last-of-type,
+section > #update-event-form > fieldset:last-of-type {
+  text-align: center; /* Centres the inline inputs */
 }
 
-section > form > fieldset > label {
-    text-transform: uppercase;
-    color: #1b315e;
-    margin: 8px 0;
-}
-
-section > form > fieldset > input, section > form > fieldset > select {
-    padding: 8px;
-    margin: 8px 0;
-    border: 1px solid #1b315e;
-}
-
-
-section > table {
-    border-collapse: collapse;
-    width: 100%;
-    margin: 8px 0;
-    font-size: 10pt;
-}
-
-section > table, section > table th, section > table td {
-    border: 2px solid #1b315e;
-    padding: 8px;
-    text-align: center;
-}
-
-section > table > td > a {
-    text-decoration: underline;
-    color: #1b315e;
-}
-
-section > table td button {
-    border: 1px solid #1b315e;
-    background: none;
-    color: #1b315e;
-    padding: 8px;
-    font-size: 8pt;
-    cursor: pointer;
-}
-/* Section Conclude */
-
-/* Footer */
-footer {
+section > #registration-form > fieldset > .form-row,
+section > #update-event-form > fieldset > .form-row {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    background: #333;
-    padding: 12px;
+    align-items: center; /* Vertically centres label and input */
+    justify-content: flex-start;
+    margin-bottom: 10px;
+    gap: 10px; /* Space between label and input */
 }
 
-footer > p {
-    color: #fff;
-    font-size: 8pt;
+/* Ensure labels have a consistent width */
+section > #registration-form > fieldset > .form-row > label,
+section > #update-event-form > fieldset > .form-row > label {
+    width: 150px; /* Adjust as needed for alignment */
+    text-align: right; /* Keeps labels neatly aligned */
+    color: #1b315e;
+    font-weight: bold;
+    text-transform: uppercase;  
+}
+
+section > #registration-form > fieldset > .form-row > input,
+section > #registration-form > fieldset > .form-row > select,
+section > #update-event-form > fieldset > .form-row > input,
+section > #update-event-form > fieldset > .form-row > textarea,
+section > #update-event-form > fieldset > .form-row > select {
+    flex: 1;
+    padding: 8px;
     margin: 8px 0;
+    border: 1px solid #1b315e;
 }
 
-footer > p > a {
-    color: #fff;
-}
-/* Footer Conclude */
-
-/* Debralee styling additions */
-/* Registration sucess message */
 .success>h3 {
     margin-top: 1em;
     color: green;
@@ -265,47 +241,6 @@ section#attendees > * {
     margin: 8px 0;
 }
 
-/* REGISTRATION FORM SPECIFICS (registration.html)
-    * Uses <div class="form-row"> to put label/input pairs in their own rows
- */
-/* Limit width of the registration form and centre it */
-#registration-form {
-  max-width: 600px;
-  margin: 0 auto;
-  text-align: left;
-  width: 100%; /* Ensures it grows up to max-width */
-}
-
-#registration-form fieldset:last-of-type { /* the submit and reset inputs */
-  text-align: center; /* centers the inline inputs */
-}
-
- .form-row {
-  display: flex;
-  align-items: center; /* Vertically centers label abd input */
-  justify-content: flex-start;
-  margin-bottom: 10px;
-  gap: 10px; /* Space between label and input */
-}
-
-/* Ensure labels have a consistent width */
-.form-row label {
-  width: 150px; /* Adjust as needed for alignment */
-  text-align: right; /* Keeps labels neatly aligned */
-  color: #1b315e;
-  font-weight: bold;
-text-transform: uppercase;  
-}
-
-/* Inputs stretch but stay neat */
-.form-row input,
-.form-row select {
-  flex: 1;
-  padding: 8px;
-  margin: 8px 0;
-  border: 1px solid #1b315e;
-}
-
 /* Added for the new functioning 'Register for Event' button <a> in event.html */
 a.button {
     display: inline-block;
@@ -323,3 +258,82 @@ a.button:hover {
     background: #1b315e;
     color: #fff;
 }
+/* CSS developed by Debralee End. */
+
+section > form > fieldset {
+    border: 2px solid #1b315e;
+    margin: 8px 0;
+    padding: 12px;
+    font-size: 10pt;
+}
+
+section > form > fieldset > legend {
+    font-weight: bold;
+    padding: 12px;
+    background: #1b315e;
+    color: #fff;
+}
+
+section > form > fieldset > label {
+    text-transform: uppercase;
+    color: #1b315e;
+    font-weight: bold;
+    margin: 8px 0;
+}
+
+section > form > fieldset > input, 
+section > form > fieldset > select {
+    padding: 8px;
+    margin: 8px 0;
+    border: 1px solid #1b315e;
+}
+
+section > table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 8px 0;
+    font-size: 10pt;
+}
+
+section > table, 
+section > table th, 
+section > table td {
+    border: 2px solid #1b315e;
+    padding: 8px;
+    text-align: center;
+}
+
+section > table td a {
+    text-decoration: underline;
+    color: #1b315e;
+}
+
+section > table td button {
+    border: 1px solid #1b315e;
+    background: none;
+    color: #1b315e;
+    padding: 8px;
+    font-size: 8pt;
+    cursor: pointer;
+}
+/* Section Conclude */
+
+/* Footer */
+footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #333;
+    padding: 12px;
+}
+
+footer > p {
+    color: #fff;
+    font-size: 8pt;
+    margin: 8px 0;
+}
+
+footer > p > a {
+    color: #fff;
+}
+/* Footer Conclude */
