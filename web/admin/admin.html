@@ -7,14 +7,15 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Admin Dashboard &#8212; Charity Events Kempsey</title>
+        <title>Dashboard &#8212; Admin Portal &#8212; Charity Events Kempsey</title>
         <link rel="stylesheet" href="../styling.css">
     </head>
     <body>
         <!-- Nav -->
         <nav>
-            <a class="logo" title="Charity Events Kempsey &#8212; Admin Dashboard" href="admin.html">Charity Events Kempsey &#8212; Admin Dashboard</a>
+            <a class="logo" title="Admin Portal &#8212; Charity Events Kempsey" href="admin.html">Admin Portal &#8212; Charity Events Kempsey</a>
             <div class="spacer"></div>
+            <a title="Dashboard" href="admin.html" class="active">Dashboard</a>
             <a title="New Event" href="">New Event</a>
         </nav>
         <!-- Nav Conclude -->
@@ -70,7 +71,7 @@
                             <td>${event.event_id}</td>
                             <td>${event.event_name}</td>
                             <td><a href="update.html?id=${event.event_id}">Update</a></td>
-                            <td><a href="delete.html?id=${event.event_id}">Delete</a></td>
+                            <td><button onclick="deleteEvent(${event.event_id})">Delete</button></td>
                         </tr>
                     `;
                 }).join('');
