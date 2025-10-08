@@ -23,23 +23,6 @@ router.get('/admin', function (_req, res) {
     });
 });
 
-// Homepage data.
-// Get /api/events/
-router.get('/', function (_req, res) {
-    var sql =
-        "SELECT `event`.*, category.category_name, organisation.org_name " +
-        "FROM `event` " +
-        "JOIN category ON `event`.category_id = category.category_id " +
-        "JOIN organisation ON `event`.org_id = organisation.org_id " +
-        "WHERE `event`.event_end_dt >= NOW() " +
-        "ORDER BY `event`.event_start_dt ASC";
-
-    db.query(sql, [], function (err, rows) {
-        if (err) return res.status(500).json({ error: 'Database error.' });
-        res.json(rows);
-    });
-});
-
 // Search data.
 // Get /api/events/search/
 router.get('/search', function (req, res) {
@@ -91,13 +74,56 @@ router.get('/:id', function (req, res) {
     
     db.query(sql, [req.params.id], function (err, rows) {
         if (err) return res.status(500).json({ error: 'Database error.' });
-        if (rows.length === 0) return res.status(404).json({ error: 'Event not found, please try again' });
+        if (rows.length === 0) return res.status(404).json({ error: 'Event not found, please try again.' });
         res.json(rows[0]);
     });
 });
 
+// Homepage data.
+// Get /api/events/
+router.get('/', function (_req, res) {
+    var sql =
+        "SELECT `event`.*, category.category_name, organisation.org_name " +
+        "FROM `event` " +
+        "JOIN category ON `event`.category_id = category.category_id " +
+        "JOIN organisation ON `event`.org_id = organisation.org_id " +
+        "WHERE `event`.event_end_dt >= NOW() " +
+        "ORDER BY `event`.event_start_dt ASC";
+
+    db.query(sql, [], function (err, rows) {
+        if (err) return res.status(500).json({ error: 'Database error.' });
+        res.json(rows);
+    });
+});
+
+// Update event data.
+// PUT /api/events/:id
+router.put('/:id', function (req, res) {
+    var EventID = Number(req.params.id);
+    if (!Number.isInteger(EventID) || EventID <= 0) {
+        return res.status(400).json({ error: 'Invalid Event ID.' });
+    }
+
+    var data = req.body;
+    var sql = 
+        "UPDATE `event` SET event_name = ?, event_desc = ?, event_start_dt = ?, event_end_dt = ?, " +
+        "location_city = ?, location_state = ?, location_postcode = ? WHERE event_id = ?";
+
+    var params = [data.event_name, data.event_desc, data.event_start_dt, data.event_end_dt, data.location_city, data.location_state, data.location_postcode, EventID];
+
+    db.query(sql, params, function (err, result) {
+        if (err) {
+            return res.status(500).json({ error: 'Database error.' });
+        }
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ error: 'Event not found, please try again.' });
+        }
+        res.json({ message: 'Event has been updated successfully.' });
+    });
+});
+
 // Delete event data.
-// DELETE /api/events/:id
+// Delete /api/events/:id
 router.delete('/:id', function (req, res) {
     var EventID = Number(req.params.id);
     if (!Number.isInteger(EventID) || EventID <= 0) {
