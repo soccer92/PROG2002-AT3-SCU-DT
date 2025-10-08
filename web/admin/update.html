@@ -91,7 +91,6 @@
 
         if(uniqueEventID === null) {
             warning.innerText = "No event has been selected for update. Please navigate back to the dashboard and try again."
-            return;
         } else {
             // Retrieves values and fills the form in accordingly.
             fetch("/api/events/" + encodeURIComponent(uniqueEventID))
