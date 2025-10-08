@@ -25,6 +25,62 @@
          <main>
             <section>
                 <h2>New Event</h2>
+                <form id="new-event-form">
+                    <fieldset>
+                        <legend>New form:</legend>
+                        <!-- Event Name -->
+                         <div class="form-row">
+                            <label for="eventName">Event Name</label>
+                            <input type="text" id="eventName" name="eventName" required>
+                        </div>
+                        <!-- Event Description -->
+                        <div class="form-row">
+                            <label for="eventDescription">Event Description</label>
+                            <textarea id="eventDescription" name="eventDescription" rows="4" required></textarea>
+                        </div>
+                        <!-- Event Start Date and Time -->
+                        <div class="form-row">
+                            <label for="startDateTime">Event Start Date and Time</label>
+                            <input type="datetime-local" id="startDateTime" name="startDateTime">
+                        </div>
+                        <!-- Event End Date and Time -->
+                        <div class="form-row">
+                            <label for="endDateTime">Event End Date and Time</label>
+                            <input type="datetime-local" id="endDateTime" name="endDateTime">
+                        </div>
+                        <!-- Event City -->
+                        <div class="form-row">
+                            <label for="locationCity">Event City</label>
+                            <input type="text" id="locationCity" name="locationCity" required>
+                        </div>
+                        <!-- Event State -->
+                        <div class="form-row">
+                            <label for="locationState">Event State</label>
+                            <input type="text" id="locationState" name="locationState" required>
+                        </div>
+                        <!-- Event Postcode -->
+                        <div class="form-row">
+                            <label for="locationPostcode">Event Postcode</label>
+                            <input type="text" id="locationPostcode" name="locationPostcode" required>
+                        </div>
+                        <!-- Goal Amount -->
+                        <div class="form-row">
+                            <label for="goalAmount">Goal Amount</label>
+                            <input type="number" id="goalAmount" name="goalAmount" required>
+                        </div>
+                        <!-- Category -->
+                        <div class="form-row">
+                            <label for="category">Category</label>
+                            <select id="category" name="category">
+                                <option value="">Select a Category</option>
+                            </select>
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <!-- Submit Form -->
+                        <input type="submit" name="submit" value="Create Event">
+                    </fieldset>
+                </form>
             </section>
          </main>
         <!-- Main Content Conclude -->
