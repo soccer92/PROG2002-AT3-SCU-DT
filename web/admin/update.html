@@ -106,8 +106,8 @@
                     // Map form field ID names to the values in the Event database.
                     document.getElementById("eventName").value = event.event_name;
                     document.getElementById("eventDescription").value = event.event_desc;
-                    document.getElementById("startDateTime").value = event.event_start_dt.replace('T',' ');
-                    document.getElementById("endDateTime").value = event.event_end_dt.replace('T',' ');
+                    document.getElementById("startDateTime").value = (event.event_start_dt || '').replace(' ', 'T').slice(0, 16);
+                    document.getElementById("endDateTime").value   = (event.event_end_dt   || '').replace(' ', 'T').slice(0, 16);
                     document.getElementById("locationCity").value = event.location_city;
                     document.getElementById("locationState").value = event.location_state;
                     document.getElementById("locationPostcode").value = event.location_postcode;
@@ -128,14 +128,14 @@
                 location_state: document.getElementById("locationState").value,
                 location_postcode: document.getElementById("locationPostcode").value
             };
-            fetch("/api/events" + encodeURIComponent(uniqueEventID), {
+            fetch("/api/events/" + encodeURIComponent(uniqueEventID), {
                 method: "PUT",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify(newUpdatedEvent)
             })
             .then(response => response.json())
             .then(data => {
-                if (data.result) {
+                if (data.message) {
                     alert("Event has been updated successfully with the new details.");
                     location.href = "admin.html";
                 }
