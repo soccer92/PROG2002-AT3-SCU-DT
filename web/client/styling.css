@@ -154,7 +154,8 @@ section > button {
 
 /* CSS developed by Debralee. */
 section > #registration-form,
-section > #update-event-form {
+section > #update-event-form,
+section > #new-event-form {
     /* Limit width of the registration form and centre it. */
     max-width: 600px;
     margin: 0 auto;
@@ -164,12 +165,14 @@ section > #update-event-form {
 
 /* The submit and reset inputs */
 section > #registration-form > fieldset:last-of-type,
-section > #update-event-form > fieldset:last-of-type {
+section > #update-event-form > fieldset:last-of-type,
+section > #new-event-form > fieldset:last-of-type {
   text-align: center; /* Centres the inline inputs */
 }
 
 section > #registration-form > fieldset > .form-row,
-section > #update-event-form > fieldset > .form-row {
+section > #update-event-form > fieldset > .form-row,
+section > #new-event-form > fieldset > .form-row {
     display: flex;
     align-items: center; /* Vertically centres label and input */
     justify-content: flex-start;
@@ -179,7 +182,8 @@ section > #update-event-form > fieldset > .form-row {
 
 /* Ensure labels have a consistent width */
 section > #registration-form > fieldset > .form-row > label,
-section > #update-event-form > fieldset > .form-row > label {
+section > #update-event-form > fieldset > .form-row > label,
+section > #new-event-form > fieldset > .form-row > label {
     width: 150px; /* Adjust as needed for alignment */
     text-align: right; /* Keeps labels neatly aligned */
     color: #1b315e;
@@ -191,7 +195,9 @@ section > #registration-form > fieldset > .form-row > input,
 section > #registration-form > fieldset > .form-row > select,
 section > #update-event-form > fieldset > .form-row > input,
 section > #update-event-form > fieldset > .form-row > textarea,
-section > #update-event-form > fieldset > .form-row > select {
+section > #new-event-form > fieldset > .form-row > select,
+section > #new-event-form > fieldset > .form-row > input,
+section > #new-event-form > fieldset > .form-row > textarea {
     flex: 1;
     padding: 8px;
     margin: 8px 0;
