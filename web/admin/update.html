@@ -63,6 +63,11 @@
                             <label for="locationPostcode">Event Postcode</label>
                             <input type="text" id="locationPostcode" name="locationPostcode" required>
                         </div>
+                        <!-- Goal Amount -->
+                        <div class="form-row">
+                            <label for="goalAmount">Goal Amount</label>
+                            <input type="number" id="goalAmount" name="goalAmount" required>
+                        </div>
                     </fieldset>
                     <fieldset>
                         <!-- Submit Form -->
@@ -110,6 +115,7 @@
                     document.getElementById("locationCity").value = event.location_city;
                     document.getElementById("locationState").value = event.location_state;
                     document.getElementById("locationPostcode").value = event.location_postcode;
+                    document.getElementById("goalAmount").value = event.goal_amount;
                 })
                 .catch(function() {
                     warning.innerText = "Error loading event details, please try again."
@@ -125,7 +131,8 @@
                 event_end_dt: document.getElementById("endDateTime").value.replace('T',' '),
                 location_city: document.getElementById("locationCity").value,
                 location_state: document.getElementById("locationState").value,
-                location_postcode: document.getElementById("locationPostcode").value
+                location_postcode: document.getElementById("locationPostcode").value,
+                goal_amount: document.getElementById("goalAmount").value
             };
             fetch("/api/events/" + encodeURIComponent(uniqueEventID), {
                 method: "PUT",
