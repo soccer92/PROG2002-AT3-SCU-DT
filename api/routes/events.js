@@ -107,9 +107,9 @@ router.put('/:id', function (req, res) {
     var data = req.body;
     var sql = 
         "UPDATE `event` SET event_name = ?, event_desc = ?, event_start_dt = ?, event_end_dt = ?, " +
-        "location_city = ?, location_state = ?, location_postcode = ? WHERE event_id = ?";
+        "location_city = ?, location_state = ?, location_postcode = ?, goal_amount = ? WHERE event_id = ?";
 
-    var params = [data.event_name, data.event_desc, data.event_start_dt, data.event_end_dt, data.location_city, data.location_state, data.location_postcode, EventID];
+    var params = [data.event_name, data.event_desc, data.event_start_dt, data.event_end_dt, data.location_city, data.location_state, data.location_postcode, data.goal_amount, EventID];
 
     db.query(sql, params, function (err, result) {
         if (err) {
@@ -119,6 +119,36 @@ router.put('/:id', function (req, res) {
             return res.status(404).json({ error: 'Event not found, please try again.' });
         }
         res.json({ message: 'Event has been updated successfully.' });
+    });
+});
+
+// Add (create) new event data.
+// Post /api/events/
+router.post('/', function (req, res) {
+    var newEventData = req.body;
+    var orgID = 1; // Default organisation ID for creating a new event. Need it for the event creation to work.
+
+    if (!newEventData.event_name || !newEventData.event_desc || !newEventData.event_start_dt ||
+        !newEventData.event_end_dt || !newEventData.location_city || !newEventData.location_state ||
+        !newEventData.location_postcode || !newEventData.goal_amount || !newEventData.category_id) {
+        return res.status(400).json({ error: 'Missing required event data.' });
+    }
+
+    var sql =
+        "INSERT INTO `event` (event_name, event_desc, event_start_dt, event_end_dt, " +
+        "location_city, location_state, location_postcode, goal_amount, category_id, org_id) " +
+        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        
+    var params = [
+        orgID, newEventData.category_id, newEventData.event_name, newEventData.event_desc, newEventData.event_start_dt,
+        newEventData.event_end_dt, newEventData.location_city, newEventData.location_state, newEventData.location_postcode, newEventData.goal_amount
+    ];
+
+    db.query(sql, params, function (_err, result) {
+        if (_err) {
+            return res.status(500).json({ error: 'Database error while creating a new event.' });
+        }
+        res.status(201).json({ message: 'New event has been created successfully.', event_id: result.insertId });
     });
 });
 
