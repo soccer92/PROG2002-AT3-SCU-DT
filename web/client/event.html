@@ -147,7 +147,7 @@
                             ${ticketPrice !== null && !Number.isNaN(ticketPrice) ? `<p><strong>Ticket Price:</strong> $${ticketPrice.toFixed(2)}</p>` : ""}
                             ${goalAmount !== null && !Number.isNaN(goalAmount) ? `<p><strong>Goal Amount:</strong> $${goalAmount.toFixed(2)}</p>` : ""}
                             <div class="event-actions">
-                                <a class="button" role="button" href="registration.html?id=${encodeURIComponent(uniqueEventID)}">Register for Event</a>
+                                <a class="button" role="button" href="/registration?id=${encodeURIComponent(uniqueEventID)}">Register for Event</a>
                             </div>
                         `;
                         eventDetail.innerHTML = eventHTML.trim();
