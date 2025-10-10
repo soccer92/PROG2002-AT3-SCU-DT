@@ -28,6 +28,35 @@ app.use('/api/events', routerEvents); // Map the events route.
 app.use('/api/categories', routerCategories); // Map the categories route.
 app.use('/api/registrations', routerRegistrations); // Map the registrations route.
 
+// Page routes.
+app.get('/', function (_req, res) {
+    res.sendFile(path.join(__dirname, '../web/client/index.html'));
+});
+
+app.get('/search', function (_req, res) {
+    res.sendFile(path.join(__dirname, '../web/client/search.html'));
+});
+
+app.get('/event', function (_req, res) {
+    res.sendFile(path.join(__dirname, '../web/client/event.html'));
+});
+
+app.get('/register', function (_req, res) {
+    res.sendFile(path.join(__dirname, '../web/client/registration.html'));
+});
+
+app.get('/admin', function (_req, res) {
+    res.sendFile(path.join(__dirname, '../web/admin/admin.html'));
+});
+
+app.get('/admin/update', function (_req, res) {
+    res.sendFile(path.join(__dirname, '../web/admin/update.html'));
+});
+
+app.get('/admin/new', function (_req, res) {
+    res.sendFile(path.join(__dirname, '../web/admin/new.html'));
+});
+
 app.listen(8080, () => {
     console.log('Server is running on port 8080');
 });
