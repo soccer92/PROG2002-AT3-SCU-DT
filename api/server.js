@@ -41,7 +41,7 @@ app.get('/event', function (_req, res) {
     res.sendFile(path.join(__dirname, '../web/client/event.html'));
 });
 
-app.get('/register', function (_req, res) {
+app.get('/registration', function (_req, res) {
     res.sendFile(path.join(__dirname, '../web/client/registration.html'));
 });
 
