@@ -67,7 +67,7 @@
                 }
 
                 upcomingEvents.innerHTML = events.map(function (event) {
-                    var eventDetail = "event.html?id=" + encodeURIComponent(event.event_id);
+                    var eventDetail = "/event?id=" + encodeURIComponent(event.event_id);
                     var startEventDT = new Date(event.event_start_dt).toLocaleString("en-AU").replace(",", " at");
                     var endEventDT = new Date(event.event_end_dt).toLocaleString("en-AU").replace(",", " at");
 
