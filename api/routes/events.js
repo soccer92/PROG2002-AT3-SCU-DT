@@ -140,8 +140,8 @@ router.post('/', function (req, res) {
         "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         
     var params = [
-        orgID, newEventData.category_id, newEventData.event_name, newEventData.event_desc, newEventData.event_start_dt,
-        newEventData.event_end_dt, newEventData.location_city, newEventData.location_state, newEventData.location_postcode, newEventData.goal_amount
+        newEventData.event_name, newEventData.event_desc, newEventData.event_start_dt, newEventData.event_end_dt, newEventData.location_city, 
+        newEventData.location_state, newEventData.location_postcode, newEventData.goal_amount, newEventData.category_id, orgID
     ];
 
     db.query(sql, params, function (_err, result) {
