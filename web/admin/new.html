@@ -94,7 +94,60 @@
         <!-- Footer Conclude -->
     
     <!-- Javascript -->
-    <script></script>
+    <script>
+        var eventFormAdd = document.getElementById("new-event-form");
+        var categoryValues = document.getElementById("category");
+        // Load categories into the category dropdown.
+        fetch("/api/categories")
+            .then(function (response) { return response.json(); })
+            .then(function (categories) {
+                if (!Array.isArray(categories)) return;
+                var options = categories.map(function (cat) {
+                    return '<option value="' + String(cat.category_id) + '">' + (cat.category_name || '') + '</option>';
+                }).join('');
+                categoryValues.insertAdjacentHTML('beforeend', options);
+            })
+            .catch(function (error) {
+                console.error("Failed to load categories:", error);
+            });
+        
+            // Handle form submissions.
+            eventFormAdd.onsubmit = function (e) {
+                e.preventDefault();
+                var newEvent = {
+                    event_name: document.getElementById("eventName").value,
+                    event_desc: document.getElementById("eventDescription").value,
+                    event_start_dt: document.getElementById("startDateTime").value.replace('T',' '),
+                    event_end_dt: document.getElementById("endDateTime").value.replace('T',' '),
+                    location_city: document.getElementById("locationCity").value,
+                    location_state: document.getElementById("locationState").value,
+                    location_postcode: document.getElementById("locationPostcode").value,
+                    goal_amount: document.getElementById("goalAmount").value,
+                    category_id: document.getElementById("category").value
+                };
+                fetch("/api/events", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(newEvent)
+                })
+                .then(function(response) {
+                    return response.json();
+                })
+                .then(function(result) {
+                    if (result.error) {
+                        alert("Error creating event: " + result.error);
+                    } else {
+                        alert("Event created successfully!");
+                        eventFormAdd.reset();
+                    }
+                })
+                .catch(function(error) {
+                    alert("An error occurred while creating the event. Please try again.");
+                });
+            };
+    </script>
     <!-- Javascript Conclude -->
     </body>
 </html>
