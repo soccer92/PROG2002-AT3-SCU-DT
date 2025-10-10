@@ -11,7 +11,8 @@ var connection = mysql.createConnection({
     // password: 'Psy12cho!', // Change to your own password when required.
     password: 'config#1',
     database: 'charityevents_db',
-    timezone: 'Australia/Sydney'
+    timezone: 'Australia/Sydney',
+    dateStrings: true // Ensures date fields are returned as Sydney time strings.
 });
 
 // Open the MySQL Connection
