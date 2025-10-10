@@ -94,7 +94,7 @@
                 return;
             }
             upcomingEvents.innerHTML = events.map(function (event) {
-                var eventDetail = "event.html?id=" + encodeURIComponent(event.event_id);
+                var eventDetail = "/event?id=" + encodeURIComponent(event.event_id);
                 var startEventDT = new Date(event.event_start_dt).toLocaleString("en-AU").replace(",", " at");
                 var endEventDT = new Date(event.event_end_dt).toLocaleString("en-AU").replace(",", " at");
 
@@ -105,7 +105,7 @@
                         <p>${event.location_city}</p>
                         <p>Commences on the ${startEventDT} and concludes on the ${endEventDT}</p>
                         <p>${event.event_desc}</p>
-                        <p><a class="event-detail" href="event.html?id=${encodeURIComponent(event.event_id)}">Click for More Details</a></p>
+                        <p><a class="event-detail" href="/event?id=${encodeURIComponent(event.event_id)}">Click for More Details</a></p>
                     </div>
                 `;
             }).join('');
