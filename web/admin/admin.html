@@ -14,10 +14,10 @@
     <body>
         <!-- Nav -->
         <nav>
-            <a class="logo" title="Admin Portal &#8212; Charity Events Kempsey" href="admin.html">Admin Portal &#8212; Charity Events Kempsey</a>
+            <a class="logo" title="Admin Portal &#8212; Charity Events Kempsey" href="/admin">Admin Portal &#8212; Charity Events Kempsey</a>
             <div class="spacer"></div>
-            <a title="Dashboard" href="admin.html" class="active">Dashboard</a>
-            <a title="New Event" href="new.html">New Event</a>
+            <a title="Dashboard" href="/admin" class="active">Dashboard</a>
+            <a title="New Event" href="/admin/new">New Event</a>
         </nav>
         <!-- Nav Conclude -->
 
@@ -71,7 +71,7 @@
                         <tr>
                             <td>${event.event_id}</td>
                             <td>${event.event_name}</td>
-                            <td><a href="update.html?id=${event.event_id}">Update</a></td>
+                            <td><a href="/admin/update?id=${event.event_id}">Update</a></td>
                             <td><button onclick="deleteEvent(${event.event_id})">Delete</button></td>
                         </tr>
                     `;
