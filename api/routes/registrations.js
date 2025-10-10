@@ -1,8 +1,7 @@
 /*
     Name: Debralee Thompson
     Student ID: 24416186
-    Description: Registration endpoints that handle attendee registration submissions 
-    and retrieval of registrations for specific events.
+    Description: Registration endpoints that handle attendee registration submissions and retrieval of registrations for specific events.
 */
 
 
