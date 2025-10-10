@@ -10,7 +10,8 @@ var connection = mysql.createConnection({
     user: 'root',
     // password: 'Psy12cho!', // Change to your own password when required.
     password: 'config#1',
-    database: 'charityevents_db'
+    database: 'charityevents_db',
+    timezone: 'Australia/Sydney'
 });
 
 // Open the MySQL Connection
